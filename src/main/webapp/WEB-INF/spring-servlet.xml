@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--带注解的bean能被管理-->
+    <context:annotation-config />
+
+    <!-- 启动注解驱动的spring mvc 功能 -->
+    <mvc:annotation-driven/>
+
+    <mvc:interceptors>
+        <bean class="com.mall.common.HttpInterceptor" />
+    </mvc:interceptors>
+
+    <!-- 启动包扫描功能 -->
+    <context:component-scan base-package="com.mall.controller" />
+    <context:component-scan base-package="com.mall.service" />
+
+    <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/css/" mapping="/css/**"/>
+    <mvc:resources location="/bootstrap3.3.5/" mapping="/bootstrap3.3.5/**"/>
+    <mvc:resources location="/assets/" mapping="/assets/**"/>
+    <mvc:resources location="/ztree/" mapping="/ztree/**"/>
+
+    <bean class="com.mall.common.ApplicationContextHelper" lazy-init="false" />
+    <!--一根据注解找接口，请求用什么代码请求，定义的requestMapping定义的接口，来找相应的接口-->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+
+    <bean class="com.mall.common.SpringExceptionResolver" />
+
+
+    <!--请求来了用什么样的数据返回，json?jsp页面? 需要做下面的两个bean-->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+    <!--希望mapping请求，用json请求的时候，用下面这个类处理-->
+    <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+    <!--希望mapping请求，用jsp请求的时候，用下面这个类处理-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+</beans>
