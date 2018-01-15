@@ -31,7 +31,7 @@
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <span class="user-info">
                             <small>欢迎,</small>
-                            Admin
+                            ${user.username}
                         </span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
@@ -98,7 +98,7 @@
 
                 <ul class="submenu">
                     <li class="">
-                        <a class="popstyle" href="/sys/dept/page.page" target="_blank">
+                        <a class="popstyle" href="/sys/dept/dept.page" target="_blank">
                             <i class="menu-icon fa fa-caret-right"></i>
                             用户管理
                         </a>
