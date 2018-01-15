@@ -1,5 +1,6 @@
 package com.mall.service;
 
+import com.mall.model.SysUser;
 import com.mall.param.UserParam;
 
 /**
@@ -10,4 +11,6 @@ public interface IUserService {
     void update(UserParam param);
 
     void save(UserParam param);
+
+    SysUser findByKeyword(String keyword);
 }

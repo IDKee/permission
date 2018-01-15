@@ -23,6 +23,12 @@ public class UserServiceImpl implements IUserService {
     @Resource
     private SysUserMapper sysUserMapper;
 
+
+
+    public SysUser findByKeyword(String keyword){
+        return null;
+    }
+
     /**
      * 增加用户
      * @param param
