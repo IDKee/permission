@@ -26,7 +26,7 @@ public class UserServiceImpl implements IUserService {
 
 
     public SysUser findByKeyword(String keyword){
-        return null;
+        return sysUserMapper.findByKeyword(keyword);
     }
 
     /**
@@ -77,11 +77,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     private boolean checkEmailExist(String mail,Integer userId){
-        return false;
+        return sysUserMapper.countByMail(mail,userId) > 0;
     }
 
     private boolean checkTelephoneExist(String phone,Integer userId){
-        return false;
+        return sysUserMapper.countByTelephone(phone,userId) > 0;
     }
 
 }

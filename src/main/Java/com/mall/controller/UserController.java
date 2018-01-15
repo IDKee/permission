@@ -18,7 +18,6 @@ import java.io.IOException;
  * Created by 王乾 on 2018/1/15.
  */
 @Controller
-@RequestMapping("/user")
 public class UserController {
 
     @Resource
@@ -57,7 +56,7 @@ public class UserController {
         if(StringUtils.isNotBlank(ret)){
             request.setAttribute(Const.RET,ret);
         }
-        String path = "sigin.jsp";
+        String path = "signin.jsp";
         request.getRequestDispatcher(path).forward(request,response);
 
     }

@@ -42,7 +42,7 @@
 
 <div class="container">
     <form class="form-signin" action="/login.page?ret=<%=ret%>" method="post">
-        <h2 class="form-signin-heading">请登陆</h2>
+        <h3 class="form-signin-heading">请登陆 </h3>
         <label for="inputEmail" class="sr-only">邮箱/电话</label>
         <input type="text" id="inputEmail" class="form-control" placeholder="Email/Telephone" name="username" required autofocus value="${username}">
         <label for="inputPassword" class="sr-only">密码</label>

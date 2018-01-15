@@ -9,6 +9,8 @@ public interface IDeptService {
 
      void save(DeptParam param);
 
-    void update(DeptParam param);
+     void update(DeptParam param);
+
+     void delete(int deptId);
 
 }
