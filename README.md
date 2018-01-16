@@ -42,4 +42,54 @@
 
     - 把(后端,前端,UI),0.1,{(0 - >技术部,产品部,客服部),(0.1 - >后端,前端,Ui)} 传入
       transformDeptTree 进行递归
->>>>>>> dept and tree
+
+### 加载用户和分页信息
+
+1. 比如点击技术部
+2. 获取当前页，页面大小,请求接口
+    ```
+        /sys/user/page.json?deptId=1
+    ```
+3. 进入 /sys/user/page.json
+    - 得到model里面有传进来得当前页，页面大小，和内部计算得偏移量
+    - 传进来得部门id,部门下面有没有人(count)
+    - 如果有人进行分页查询，返回查询后得PageResult(查询后得list,total=count)
+    - 返回成功得json数据
+4. 前端拿到带有用户list的数据做下面的操作
+    - 如果此列表有人进行渲染
+    - 没人显示为空
+    - 把利用page.jsp分页组件进行加载分页
+    - 模板引擎的小知识
+    ```
+      var view = {
+                     "name": "Tater",
+                     "bold": function () {
+                         return function (text, render) {
+                            return render(text) + "<br />";
+                         }
+                     }
+                 }
+           show(Mustache.render("{{#bold}}{{name}}{{/bold}}", view));
+           结果:Tater
+           原始字符串作为第一个参数，
+           默认的解释器作为第二个参数
+    ```
+    ```
+    var view = {
+                      "beatles": [
+                          { "firstname": "Johh", "lastname": "Lennon" },
+                          { "firstname": "Paul", "lastname": "McCartney" }
+                      ],
+                      "name": function () {
+                          return this.firstname + this.lastname;
+                      }
+                  };
+         show(Mustache.render("{{#beatles}}{{name}}<br />{{/beatles}}", view));
+         结果：
+         JohhLennon
+         PaulMcCartney
+         
+         Mustache会将
+         数组中的值传递给你的函数，输出你函数返回的值。这里我们可以看到最外层是数组，只要在里面
+         使用函数那么外层的数组就会作为这个函数的参数传递进去。
+    ```

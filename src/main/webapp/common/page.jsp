@@ -32,6 +32,7 @@
 </script>
 
 <script type="text/javascript">
+    //模板解析
     var paginateTemplate = $("#paginateTemplate").html();
     Mustache.parse(paginateTemplate);
     

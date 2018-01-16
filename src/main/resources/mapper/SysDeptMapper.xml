@@ -161,17 +161,18 @@
   </foreach>
 
   </update>
-<select id="countByNameAndParentId" parameterType="map" resultType="int">
-  SELECT  count(1)
-  FROM sys_dept
-  WHERE  name = #{name}
-  <if test="parentId != null">
-  AND parent_id = #{parentId}
-  </if>
-  <if test="id != null">
-  AND id != #{id}
-  </if>
-</select>
+
+  <select id="countByNameAndParentId" parameterType="map" resultType="int">
+    SELECT  count(1)
+    FROM sys_dept
+    WHERE  name = #{name}
+    <if test="parentId != null">
+    AND parent_id = #{parentId}
+    </if>
+    <if test="id != null">
+    AND id != #{id}
+    </if>
+  </select>
 
   <select id="countByParentId" parameterType="int" resultType="int">
     SELECT count(1)

@@ -104,7 +104,6 @@ public class DeptServiceImpl implements IDeptService{
      * @return
      */
     private boolean checkExist(Integer parentId,String deptName,Integer deptId){
-
         return  sysDeptMapper.countByNameAndParentId(parentId,deptName,deptId) > 0;
     }
 

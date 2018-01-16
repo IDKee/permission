@@ -1,6 +1,8 @@
 package com.mall.service.Impl;
 
 import com.google.common.base.Preconditions;
+import com.mall.beans.PageQuery;
+import com.mall.beans.PageResult;
 import com.mall.dao.SysUserMapper;
 import com.mall.exception.ParamException;
 import com.mall.model.SysUser;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 王乾 on 2018/1/13.
@@ -24,7 +27,29 @@ public class UserServiceImpl implements IUserService {
     private SysUserMapper sysUserMapper;
 
 
+    /**
+     * 查询部门下面得人员列表
+     * @param deptId
+     * @param page
+     * @return
+     */
+    public PageResult<SysUser> getPageByDeptId(int deptId, PageQuery page){
+        BeanValidator.check(page);
+        int count = sysUserMapper.countByDeptId(deptId);
+        //此部门id下有人
+        if ( count > 0){
+            List<SysUser> list = sysUserMapper.getPageByDeptId(deptId,page);
+            return PageResult.<SysUser>builder().total(count).data(list).build();
+        }
+        return PageResult.<SysUser>builder().build();
+    }
 
+
+    /**
+     * 跟据手机或邮箱进行查询
+     * @param keyword
+     * @return
+     */
     public SysUser findByKeyword(String keyword){
         return sysUserMapper.findByKeyword(keyword);
     }

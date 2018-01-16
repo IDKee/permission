@@ -24,6 +24,7 @@
         </small>
     </h1>
 </div>
+
 <div class="main-content-inner">
     <div class="col-sm-3">
         <div class="table-header">
@@ -33,6 +34,7 @@
             </a>
         </div>
         <div id="deptList">
+            <!--渲染部门列表-->
         </div>
     </div>
     <div class="col-sm-9">
@@ -80,15 +82,19 @@
                             <th class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
                         </tr>
                         </thead>
-                        <tbody id="userList"></tbody>
+                        <tbody id="userList">
+                        <!--渲染用户列表-->
+                        </tbody>
                     </table>
                     <div class="row" id="userPage">
+                        <!--渲染用户页-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div id="dialog-dept-form" style="display: none;">
     <form id="deptForm">
         <table class="table table-striped table-bordered table-hover dataTable no-footer" role="grid">
@@ -114,6 +120,7 @@
         </table>
     </form>
 </div>
+
 <div id="dialog-user-form" style="display: none;">
     <form id="userForm">
         <table class="table table-striped table-bordered table-hover dataTable no-footer" role="grid">
@@ -249,6 +256,7 @@
         // 绑定部门点击事件
         function bindDeptClick() {
 
+            //点击部门名字更改样式
             $(".dept-name").click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -256,6 +264,21 @@
                 handleDepSelected(deptId);
             });
 
+            //点击部门名字更改样式，并加载此部门的用户列表
+            function handleDepSelected(deptId) {
+                if (lastClickDeptId != -1) {
+                    var lastDept = $("#dept_" + lastClickDeptId + " .dd2-content:first");
+                    lastDept.removeClass("btn-yellow");
+                    lastDept.removeClass("no-hover");
+                }
+                var currentDept = $("#dept_" + deptId + " .dd2-content:first");
+                currentDept.addClass("btn-yellow");
+                currentDept.addClass("no-hover");
+                lastClickDeptId = deptId;
+                loadUserList(deptId);
+            }
+
+            //删除部门
             $(".dept-delete").click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -279,6 +302,8 @@
                 }
             });
 
+
+             //部门编辑
             $(".dept-edit").click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -318,19 +343,7 @@
             })
         }
 
-        function handleDepSelected(deptId) {
-            if (lastClickDeptId != -1) {
-                var lastDept = $("#dept_" + lastClickDeptId + " .dd2-content:first");
-                lastDept.removeClass("btn-yellow");
-                lastDept.removeClass("no-hover");
-            }
-            var currentDept = $("#dept_" + deptId + " .dd2-content:first");
-            currentDept.addClass("btn-yellow");
-            currentDept.addClass("no-hover");
-            lastClickDeptId = deptId;
-            loadUserList(deptId);
-        }
-
+        //请求用户列表数据
         function loadUserList(deptId) {
             var pageSize = $("#pageSize").val();
             var url = "/sys/user/page.json?deptId=" + deptId;
@@ -347,12 +360,14 @@
             })
         }
 
+        //渲染用户列表
         function renderUserListAndPage(result, url) {
             if (result.ret) {
                 if (result.data.total > 0){
                     var rendered = Mustache.render(userListTemplate, {
                         userList: result.data.data,
                         "showDeptName": function() {
+                            //为什么用this，因为showDeptName在userList之间
                             return deptMap[this.deptId].name;
                         },
                         "showStatus": function() {
@@ -381,12 +396,15 @@
                 }
                 var pageSize = $("#pageSize").val();
                 var pageNo = $("#userPage .pageNo").val() || 1;
+                //写在common里面的page.jsp
                 renderPage(url, result.data.total, pageNo, pageSize, result.data.total > 0 ? result.data.data.length : 0, "userPage", renderUserListAndPage);
             } else {
                 showMessage("获取部门下用户列表", result.msg, false);
             }
         }
 
+
+         //用户添加
         $(".user-add").click(function() {
             $("#dialog-user-form").dialog({
                 model: true,
@@ -476,6 +494,8 @@
             });
         }
 
+
+         //部门添加
         $(".dept-add").click(function() {
             $("#dialog-dept-form").dialog({
                 model: true,
@@ -523,6 +543,7 @@
             }
         }
 
+        // 更新用户
         function updateUser(isCreate, successCallback, failCallback) {
             $.ajax({
                 url: isCreate ? "/sys/user/save.json" : "/sys/user/update.json",
@@ -543,6 +564,12 @@
             })
         }
 
+        /**
+         * 更新部门
+         * @param isCreate
+         * @param successCallback
+         * @param failCallback
+         */
         function updateDept(isCreate, successCallback, failCallback) {
             $.ajax({
                 url: isCreate ? "/sys/dept/save.json" : "/sys/dept/update.json",

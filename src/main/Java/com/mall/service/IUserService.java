@@ -1,5 +1,7 @@
 package com.mall.service;
 
+import com.mall.beans.PageQuery;
+import com.mall.beans.PageResult;
 import com.mall.model.SysUser;
 import com.mall.param.UserParam;
 
@@ -13,4 +15,6 @@ public interface IUserService {
     void save(UserParam param);
 
     SysUser findByKeyword(String keyword);
+
+    PageResult<SysUser> getPageByDeptId(int deptId, PageQuery page);
 }
