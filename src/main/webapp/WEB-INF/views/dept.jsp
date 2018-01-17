@@ -432,6 +432,7 @@
                 }
             });
         });
+
         function bindUserClick() {
             $(".user-acl").click(function (e) {
                 e.preventDefault();
@@ -451,6 +452,7 @@
                     }
                 })
             });
+            //编辑用户
             $(".user-edit").click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -522,7 +524,7 @@
                 }
             });
         });
-
+        //把部门的层级信息加载出来
         function recursiveRenderDeptSelect(deptList, level) {
             level = level | 0;
             if (deptList && deptList.length > 0) {
