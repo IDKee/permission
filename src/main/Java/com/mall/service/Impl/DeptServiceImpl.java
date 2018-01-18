@@ -1,6 +1,7 @@
 package com.mall.service.Impl;
 
 import com.google.common.base.Preconditions;
+import com.mall.common.RequestHolder;
 import com.mall.dao.SysDeptMapper;
 import com.mall.dao.SysUserMapper;
 import com.mall.exception.ParamException;
@@ -38,8 +39,10 @@ public class DeptServiceImpl implements IDeptService{
         SysDept dept = SysDept.builder().name(param.getName()).parentId(param.getParentId())
                         .seq(param.getSeq()).remark(param.getRemark()).build();
         dept.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId()));
-        dept.setOperator("system");// TODO: 2018/1/1
-        dept.setOperateIp("127.0.0.1");//// TODO: 2018/1/1
+//      dept.setOperator("system");
+        dept.setOperator(RequestHolder.getCurrentUser().getUsername());
+      dept.setOperateIp("127.0.0.1");
+//        dept.setOperateIp(RequestHolder.getCurrentRequest());
         dept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(dept);
     }
@@ -63,7 +66,8 @@ public class DeptServiceImpl implements IDeptService{
                 .seq(param.getSeq()).remark(param.getRemark()).build();
 
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId()));
-        after.setOperator("system");// TODO: 2018/1/1
+//      after.setOperator("system");
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperateIp("127.0.0.1");//// TODO: 2018/1/1
         after.setOperateTime(new Date());
         updateWithChild(before,after);

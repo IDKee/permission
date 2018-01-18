@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public class RequestHolder {
 
+    /**
+     * 处理高并发的对象
+     */
     private static final ThreadLocal<SysUser> userHolder = new ThreadLocal<SysUser>();
 
     private static final ThreadLocal<HttpServletRequest> requestHolder = new ThreadLocal<HttpServletRequest>();

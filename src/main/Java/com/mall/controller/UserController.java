@@ -53,8 +53,10 @@ public class UserController {
             request.getSession().setAttribute(Const.CURRENT_USER,sysUser);
             if(StringUtils.isNotBlank(ret)){
                 response.sendRedirect(ret);
+                return;
             }else {
-                response.sendRedirect("/admin/index.page");// TODO: 2018/1/15
+                response.sendRedirect("/admin/index.page");
+                return;
             }
         }
 

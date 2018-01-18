@@ -3,6 +3,7 @@ package com.mall.service.Impl;
 import com.google.common.base.Preconditions;
 import com.mall.beans.PageQuery;
 import com.mall.beans.PageResult;
+import com.mall.common.RequestHolder;
 import com.mall.dao.SysUserMapper;
 import com.mall.exception.ParamException;
 import com.mall.model.SysUser;
@@ -72,7 +73,8 @@ public class UserServiceImpl implements IUserService {
         SysUser user = SysUser.builder().username(param.getUsername()).telephone(param.getTelephone())
                             .mail(param.getMail()).password(encryptedPassword).deptId(param.getDeptId())
                             .status(param.getStatus()).remark(param.getRemark()).build();
-        user.setOperator("system");
+//        user.setOperator("system");
+        user.setOperator(RequestHolder.getCurrentUser().getUsername());
         user.setOperateIp("127.0.0.1");
         user.setOperateTime(new Date());
 
@@ -98,6 +100,9 @@ public class UserServiceImpl implements IUserService {
         SysUser after = SysUser.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone())
                 .mail(param.getMail()).deptId(param.getDeptId())
                 .status(param.getStatus()).remark(param.getRemark()).build();
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
+        after.setOperateIp("127.0.0.1");
+        after.setOperateTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(after);
     }
 
