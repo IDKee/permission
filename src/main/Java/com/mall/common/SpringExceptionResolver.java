@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 异常类，被spring管理，出现异常将被捕捉到
  * Created by 王乾 on 2017/12/30.
  */
 @Slf4j
@@ -24,6 +25,7 @@ public class SpringExceptionResolver implements HandlerExceptionResolver{
         if (url.endsWith(".json")) {
             if (ex instanceof PermissionException || ex instanceof ParamException) {
                 JsonData result = JsonData.fail(ex.getMessage());
+                //为什么是jsonView，在spring-servlet里面配置的，进行json返回
                 mv = new ModelAndView("jsonView", result.toMap());
             } else {
                 log.error("unknown json exception, url:" + url, ex);
@@ -33,6 +35,7 @@ public class SpringExceptionResolver implements HandlerExceptionResolver{
         } else if (url.endsWith(".page")){ // 这里我们要求项目中所有请求page页面，都使用.page结尾
             log.error("unknown page exception, url:" + url, ex);
             JsonData result = JsonData.fail(defaultMsg);
+            //寻找一个叫exception的jsp页面
             mv = new ModelAndView("exception", result.toMap());
         } else {
             log.error("unknow exception, url:" + url, ex);

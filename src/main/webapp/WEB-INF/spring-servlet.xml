@@ -28,9 +28,8 @@
     <bean class="com.mall.common.ApplicationContextHelper" lazy-init="false" />
     <!--一根据注解找接口，请求用什么代码请求，定义的requestMapping定义的接口，来找相应的接口-->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
-
+    <!--处理异常的bean被管理，抛出异常的时候就会被处理-->
     <bean class="com.mall.common.SpringExceptionResolver" />
-
 
     <!--请求来了用什么样的数据返回，json?jsp页面? 需要做下面的两个bean-->
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
