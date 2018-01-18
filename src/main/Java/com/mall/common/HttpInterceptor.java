@@ -39,7 +39,7 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
         long start = (Long) request.getAttribute(START_TIME);
         long end = System.currentTimeMillis();
         log.info("request completed. url:{}, cost:{}", url, end - start);
-
+        //请求完毕后释放此用户的请求进程
         removeThreadLocalInfo();
     }
 

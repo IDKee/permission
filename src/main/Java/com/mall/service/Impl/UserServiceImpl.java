@@ -10,6 +10,7 @@ import com.mall.model.SysUser;
 import com.mall.param.UserParam;
 import com.mall.service.IUserService;
 import com.mall.util.BeanValidator;
+import com.mall.util.IpUtil;
 import com.mall.util.MD5Util;
 import com.mall.util.PasswordUtil;
 import org.springframework.stereotype.Service;
@@ -73,9 +74,9 @@ public class UserServiceImpl implements IUserService {
         SysUser user = SysUser.builder().username(param.getUsername()).telephone(param.getTelephone())
                             .mail(param.getMail()).password(encryptedPassword).deptId(param.getDeptId())
                             .status(param.getStatus()).remark(param.getRemark()).build();
-//        user.setOperator("system");
+
         user.setOperator(RequestHolder.getCurrentUser().getUsername());
-        user.setOperateIp("127.0.0.1");
+        user.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         user.setOperateTime(new Date());
 
         // TODO sendEmail
@@ -100,8 +101,9 @@ public class UserServiceImpl implements IUserService {
         SysUser after = SysUser.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone())
                 .mail(param.getMail()).deptId(param.getDeptId())
                 .status(param.getStatus()).remark(param.getRemark()).build();
+
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
-        after.setOperateIp("127.0.0.1");
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(after);
     }

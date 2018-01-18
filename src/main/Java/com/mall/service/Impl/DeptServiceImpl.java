@@ -11,6 +11,7 @@ import com.mall.param.DeptParam;
 import com.mall.service.IDeptService;
 import com.mall.service.IUserService;
 import com.mall.util.BeanValidator;
+import com.mall.util.IpUtil;
 import com.mall.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,8 @@ public class DeptServiceImpl implements IDeptService{
         dept.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId()));
 //      dept.setOperator("system");
         dept.setOperator(RequestHolder.getCurrentUser().getUsername());
-      dept.setOperateIp("127.0.0.1");
-//        dept.setOperateIp(RequestHolder.getCurrentRequest());
+//      dept.setOperateIp("127.0.0.1");
+        dept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         dept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(dept);
     }
@@ -68,7 +69,7 @@ public class DeptServiceImpl implements IDeptService{
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId()));
 //      after.setOperator("system");
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
-        after.setOperateIp("127.0.0.1");//// TODO: 2018/1/1
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));//// TODO: 2018/1/1
         after.setOperateTime(new Date());
         updateWithChild(before,after);
     }
