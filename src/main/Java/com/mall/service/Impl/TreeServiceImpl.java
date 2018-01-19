@@ -7,8 +7,11 @@ package com.mall.service.Impl;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.mall.dao.SysAclModuleMapper;
 import com.mall.dao.SysDeptMapper;
+import com.mall.dto.AclModuleLevelDto;
 import com.mall.dto.DeptLevelDto;
+import com.mall.model.SysAclModule;
 import com.mall.model.SysDept;
 import com.mall.service.ITreeService;
 import com.mall.util.LevelUtil;
@@ -28,6 +31,73 @@ public class TreeServiceImpl implements ITreeService {
 
     @Resource
     private SysDeptMapper sysDeptMapper;
+    @Resource
+    private SysAclModuleMapper sysAclModuleMapper;
+
+    /**
+     * 返回权限模块的树
+     * @return
+     */
+    public List<AclModuleLevelDto> aclModuleTree(){
+        // 1. 取出所有的权限模块
+        List<SysAclModule> aclModuleList = sysAclModuleMapper.getAllAclModule();
+        // 2. 定义树形结构
+        List<AclModuleLevelDto> dtoList = Lists.newArrayList();
+        // 3. 遍历取出的权限模块，并适配成dto对象，放到树形结构里面(此时每个list中的的dtoList是空的)
+        for (SysAclModule aclModule : aclModuleList){
+            dtoList.add(AclModuleLevelDto.adapt(aclModule));
+        }
+        return aclModuleListToTree(dtoList);
+    }
+
+    /**
+     *根据当前结构适配出来一个权限树
+     * @param dtoList
+     * @return
+     */
+    private List<AclModuleLevelDto> aclModuleListToTree( List<AclModuleLevelDto> dtoList){
+        if(CollectionUtils.isEmpty(dtoList)){
+            return Lists.newArrayList();
+        }
+        //level -> [aclModule1,aclModule2,...]   Map<String,List<Object>>
+        // Multimap数据结构的key是每个层级的标识，值可以是一个同一个层级下的模块列表
+        Multimap<String,AclModuleLevelDto> levelAclModuleMap = ArrayListMultimap.create();
+        List<AclModuleLevelDto> rootList = Lists.newArrayList();
+
+        //如果是根节点,就加入rootList集合里面,
+        for (AclModuleLevelDto dto : dtoList){
+            levelAclModuleMap.put(dto.getLevel(),dto);
+            if (LevelUtil.ROOT.equals(dto.getLevel())){
+                rootList.add(dto);
+            }
+        }
+        //按找sel顺序进行排序
+        Collections.sort(rootList,aclModuleSeqDtoComparator);
+
+        //首层开始逐层生成树，转换成树形结构
+        transformModuleTree(rootList,LevelUtil.ROOT,levelAclModuleMap);
+        return rootList;
+    }
+
+    /**
+     * 转换成树形结构,递归处理
+     * @param dtoList
+     * @param level
+     * @param levelAclModuleMap
+     */
+    private void transformModuleTree(List<AclModuleLevelDto> dtoList,String level,Multimap<String,AclModuleLevelDto> levelAclModuleMap ){
+        for(int i = 0 ;i<dtoList.size();i++){
+            AclModuleLevelDto dto = dtoList.get(i);
+            String newtLevel = LevelUtil.calculateLevel(level,dto.getId());
+            List<AclModuleLevelDto> tempList = (List<AclModuleLevelDto>)levelAclModuleMap.get(newtLevel);
+            if(CollectionUtils.isNotEmpty(tempList)){
+                Collections.sort(tempList,aclModuleSeqDtoComparator);
+                dto.setAclModuleList(tempList);
+                transformModuleTree(tempList,newtLevel,levelAclModuleMap);
+            }
+        }
+    }
+
     /**
      * 返回部门树
      * @return
@@ -50,7 +120,7 @@ public class TreeServiceImpl implements ITreeService {
      * @return
      */
 
-    public List<DeptLevelDto> deptListToTree(List<DeptLevelDto> deptLevelList){
+    private List<DeptLevelDto> deptListToTree(List<DeptLevelDto> deptLevelList){
         if(CollectionUtils.isEmpty(deptLevelList)){
             return Lists.newArrayList();
         }
@@ -64,7 +134,6 @@ public class TreeServiceImpl implements ITreeService {
             if (LevelUtil.ROOT.equals(dto.getLevel())){
                 rootList.add(dto);
             }
-
         }
 
         // 按照seq从小到大排序
@@ -87,7 +156,7 @@ public class TreeServiceImpl implements ITreeService {
      * @param levelDeptMap
      */
 
-    public  void transformDeptTree(List<DeptLevelDto> deptLevelDtoList,String level,Multimap<String,DeptLevelDto> levelDeptMap){
+    private void transformDeptTree(List<DeptLevelDto> deptLevelDtoList,String level,Multimap<String,DeptLevelDto> levelDeptMap){
         for (int i = 0 ; i<deptLevelDtoList.size(); i++){
              //遍历该层的每个元素
             DeptLevelDto deptLevelDto = deptLevelDtoList.get(i);
@@ -106,9 +175,21 @@ public class TreeServiceImpl implements ITreeService {
         }
     }
 
-    public Comparator<DeptLevelDto> deptSeqComparator = new Comparator<DeptLevelDto>() {
+
+    private Comparator<DeptLevelDto> deptSeqComparator = new Comparator<DeptLevelDto>() {
         public int compare(DeptLevelDto o1, DeptLevelDto o2) {
             return o1.getSeq() - o2.getSeq();
         }
     };
+
+    /**
+     * 权限模块的比较器
+     */
+    private Comparator<AclModuleLevelDto> aclModuleSeqDtoComparator = new Comparator<AclModuleLevelDto>() {
+        public int compare(AclModuleLevelDto o1, AclModuleLevelDto o2) {
+            return o1.getSeq() - o2.getSeq();
+        }
+    };
+
+
 }

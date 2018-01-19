@@ -26,6 +26,16 @@ public class SysAclModuleController {
     }
 
     /**
+     * 权限模块树
+     * @return 模块树
+     */
+    @RequestMapping("/tree.json")
+    @ResponseBody
+    public JsonData tree(){
+        return  JsonData.success();
+    }
+
+    /**
      * 增加权限
      * @param param
      * @return JsonData

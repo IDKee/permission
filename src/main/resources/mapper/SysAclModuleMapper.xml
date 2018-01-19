@@ -176,4 +176,9 @@
       AND id != #{id}
     </if>
   </select>
+  <select id="getAllAclModule" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sys_acl_module
+  </select>
 </mapper>

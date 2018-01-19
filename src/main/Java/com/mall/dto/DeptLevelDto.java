@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by 王乾 on 2018/1/1.
+ * 部门层级的结果
  */
 @Getter
 @Setter
