@@ -17,6 +17,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 参数的校验工具
+ */
 public class BeanValidator {
     //校验工厂
     private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -27,6 +30,7 @@ public class BeanValidator {
         if (validateResult.isEmpty()) {
             return Collections.emptyMap();
         } else {
+            //有错误了
             LinkedHashMap errors = Maps.newLinkedHashMap();
             Iterator iterator = validateResult.iterator();
             while (iterator.hasNext()) {

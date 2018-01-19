@@ -69,7 +69,7 @@ public class DeptServiceImpl implements IDeptService{
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId()));
 //      after.setOperator("system");
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
-        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));//// TODO: 2018/1/1
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
         updateWithChild(before,after);
     }
@@ -78,15 +78,15 @@ public class DeptServiceImpl implements IDeptService{
     @Transactional
     private void updateWithChild(SysDept before,SysDept after){
 
-        String newLevelPrefix = after.getLevel();
-        String OldLevelPrefix = before.getLevel();
+        String newLevelPrefix = after.getLevel();//0.2
+        String OldLevelPrefix = before.getLevel();//0.1
         if ( !after.getLevel().equals(before.getLevel())) {
             //部门等级前缀更改了，子部门需要更新
             // 0.1.1   0.1.2  0.1.3
             List<SysDept> deptList = sysDeptMapper.getChildDeptListByLevel(before.getLevel());
             if(CollectionUtils.isNotEmpty(deptList)){
                 for (SysDept dept : deptList){
-                    //获取更新前的部门的子部门的level
+                    //获取更新前的部门的子部门的level 0.1.1->0.2.1
                     String level = dept.getLevel();
                     if(level.indexOf(OldLevelPrefix) == 0){
                         level = newLevelPrefix + level.substring(OldLevelPrefix.length());
