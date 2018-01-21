@@ -86,12 +86,14 @@ public class TreeServiceImpl implements ITreeService {
      * @param levelAclModuleMap
      */
     private void transformModuleTree(List<AclModuleLevelDto> dtoList,String level,Multimap<String,AclModuleLevelDto> levelAclModuleMap ){
+        //注意: id为1的模块的level是0，但是level为0.1的是id为1的子模块
         for(int i = 0 ;i<dtoList.size();i++){
             AclModuleLevelDto dto = dtoList.get(i);
             String newtLevel = LevelUtil.calculateLevel(level,dto.getId());
             List<AclModuleLevelDto> tempList = (List<AclModuleLevelDto>)levelAclModuleMap.get(newtLevel);
             if(CollectionUtils.isNotEmpty(tempList)){
                 Collections.sort(tempList,aclModuleSeqDtoComparator);
+                //sysAclModuleLevelDto里面有一个存储此模块子模块的属性
                 dto.setAclModuleList(tempList);
                 transformModuleTree(tempList,newtLevel,levelAclModuleMap);
             }

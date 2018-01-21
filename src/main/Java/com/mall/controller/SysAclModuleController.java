@@ -1,14 +1,17 @@
 package com.mall.controller;
 
 import com.mall.common.JsonData;
+import com.mall.dto.AclModuleLevelDto;
 import com.mall.param.AclModuleParam;
 import com.mall.service.IAclModuleService;
+import com.mall.service.ITreeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by 王乾 on 2018/1/19.
@@ -19,6 +22,8 @@ public class SysAclModuleController {
 
     @Resource
     private IAclModuleService iAclModuleService;
+    @Resource
+    private ITreeService iTreeService;
 
     @RequestMapping("/acl.page")
     public ModelAndView page(){
@@ -32,7 +37,8 @@ public class SysAclModuleController {
     @RequestMapping("/tree.json")
     @ResponseBody
     public JsonData tree(){
-        return  JsonData.success();
+        List<AclModuleLevelDto> dtoList = iTreeService.aclModuleTree();
+        return  JsonData.success(dtoList);
     }
 
     /**

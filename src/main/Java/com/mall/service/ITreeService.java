@@ -1,5 +1,6 @@
 package com.mall.service;
 
+import com.mall.dto.AclModuleLevelDto;
 import com.mall.dto.DeptLevelDto;
 
 import java.util.List;
@@ -10,5 +11,7 @@ import java.util.List;
 public interface ITreeService {
 
     List<DeptLevelDto> deptTree();
+
+    List<AclModuleLevelDto> aclModuleTree();
 
 }
