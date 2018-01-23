@@ -1,9 +1,9 @@
 # permission
-![](https://img.shields.io/badge/License-Apache-green.svg)
+![](https://img.shields.io/badge/License-Apache-2-green.svg)
 ![](https://img.shields.io/badge/star-1K-red.svg)
 ![](https://img.shields.io/badge/maven-v4.0.0-blue.svg)
 ![](https://img.shields.io/badge/springframework-v4.0.0-orange.svg)
-权限管理系统(基于RBAC拓展模型，分布式权限管理系统)
+
 =======
 
 ### Java权限管理系统功能列表
