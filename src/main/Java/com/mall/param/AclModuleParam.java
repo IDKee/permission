@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.internal.metadata.facets.Validatable;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

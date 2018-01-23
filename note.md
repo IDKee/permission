@@ -147,3 +147,49 @@
 4. 以后用到用户的信息去RequestHolder里面去取，不用再经过controller里传了    
 ### 如何实现添加部门或者权限的时候select的展示
 1. 遍历select的option组件
+
+
+
+### 遇到的问题以及解决方案
+1. 如何有效解决高并发，参数传递？
+利用localThread，首先定义一个filter，拦截用户信息用RequstHolder处理把每个请求的请求信息和用户的信息放入一个localThread中，方便取值，每个用户有单独的线程保存自己的信息
+```
+public class RequestHolder {
+
+    /**
+     * 处理高并发的对象
+     * 1. 每个线程是独立的
+     * 2. 登陆的时候会把每个用户的信息和请求的信息放入线程里面
+     * 3. 而在以后取用户信息可以直接取这里取
+     */
+    private static final ThreadLocal<SysUser> userHolder = new ThreadLocal<SysUser>();
+
+    private static final ThreadLocal<HttpServletRequest> requestHolder = new ThreadLocal<HttpServletRequest>();
+
+    public static void add(SysUser sysUser) {
+        userHolder.set(sysUser);
+    }
+
+    public static void add(HttpServletRequest request) {
+        requestHolder.set(request);
+    }
+
+    public static SysUser getCurrentUser() {
+        return userHolder.get();
+    }
+
+    public static HttpServletRequest getCurrentRequest() {
+        return requestHolder.get();
+    }
+
+    public static void remove() {
+        userHolder.remove();
+        requestHolder.remove();
+    }
+}
+```
+- ThreadLocal提供了保持对象的方法和避免参数传递的方便的对象访问方式。归纳了两点：
+- 每个线程中都有一个自己的ThreadLocalMap类对象，可以将线程自己的对象保持到其中，各管各的，线程可以正确的访问到自己的对象。
+- 将一个共用的ThreadLocal静态实例作为key，将不同对象的引用保存到不同线程的ThreadLocalMap中，然后在线程执行
+的各处通过这个静态ThreadLocal实例的get()方法取得自己线程保存的那个对象，避免了将这个对象作为参数传递的麻烦。
+- ThreadLocal的应用场合，我觉得最适合的是按线程多实例（每个线程对应一个实例）的对象的访问，并且这个对象很多地方都要用到。
