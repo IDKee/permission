@@ -3,7 +3,7 @@
 ![](https://img.shields.io/badge/maven-v4.0.0-blue.svg)
 ![](https://img.shields.io/badge/springframework-v4.0.0-orange.svg)
 
-=======
+===================================================================
 
 ### Java权限管理系统功能列表
 
