@@ -1,6 +1,8 @@
 package com.mall.service.Impl;
 
 import com.google.common.base.Preconditions;
+import com.mall.beans.PageQuery;
+import com.mall.beans.PageResult;
 import com.mall.common.RequestHolder;
 import com.mall.dao.SysAclMapper;
 import com.mall.exception.ParamException;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 王乾 on 2018/1/23.
@@ -66,8 +69,15 @@ public class AclServiceImpl implements IAclService {
         sysAclMapper.updateByPrimaryKeySelective(after);
     }
 
+    /**
+     * 当前权限模块下存在相同的名称模块点
+     * @param aclModuleId
+     * @param name
+     * @param id
+     * @return
+     */
     private boolean checkExist(int aclModuleId,String name,Integer id){
-        return false;
+        return sysAclMapper.countByNameAndAclModuleId(aclModuleId,name,id) > 0;
     }
 
     /**
@@ -78,4 +88,22 @@ public class AclServiceImpl implements IAclService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         return dateFormat.format(new Date()) + "_" + (int)(Math.random()*100);
     }
+
+    /**
+     * 获取权限点的分页的数据
+     * @param aclModuleId
+     * @param page
+     * @return
+     */
+    public PageResult<SysAcl> getPageByAclModuleId(Integer aclModuleId, PageQuery page){
+        BeanValidator.check(page);
+        int count = sysAclMapper.countByAclModuleId(aclModuleId);
+        if(count > 0){
+            List<SysAcl> aclList = sysAclMapper.getPageByAclModuleId(aclModuleId,page);
+            return PageResult.<SysAcl>builder().data(aclList).total(count).build();
+        }
+        return PageResult.<SysAcl>builder().build();
+    }
+
+
 }
