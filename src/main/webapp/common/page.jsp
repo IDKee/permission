@@ -55,6 +55,7 @@
         };
         $("#" + idElement).html(Mustache.render(paginateTemplate, view));
 
+        //上一页尾页绑定事件，点击后就请求url成功进行回调
         $(".page-action").click(function(e) {
             e.preventDefault();
             $("#" + idElement + " .pageNo").val($(this).attr("data-target"));

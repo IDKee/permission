@@ -480,6 +480,7 @@
         }
         //加载权限列表
         function loadAclList(aclModuleId) {
+            //获取页面大小
             var pageSize = $("#pageSize").val();
             var url = "/sys/acl/page.json?aclModuleId=" + aclModuleId;
             var pageNo = $("#aclPage .pageNo").val() || 1;
@@ -490,25 +491,32 @@
                     pageNo: pageNo
                 },
                 success: function (result) {
+                    //请求的值进行渲染list和分页
                     renderAclListAndPage(result, url);
                 }
             })
         }
-
+        //渲染权限表和分页组件
         function renderAclListAndPage(result, url) {
+            //如果获取到了信息
             if(result.ret) {
+                //信息长度大于一
                 if (result.data.total > 0){
                     var rendered = Mustache.render(aclListTemplate, {
                         aclList: result.data.data,
+                        //把权限模块的id转化成name
                         "showAclModuleName": function () {
                             return aclModuleMap[this.aclModuleId].name;
                         },
+                        //1有效2无效
                         "showStatus": function() {
                             return this.status == 1 ? "有效": "无效";
                         },
+                        //1菜单2按钮3其他
                         "showType": function() {
                             return this.type == 1 ? "菜单" : (this.type == 2 ? "按钮" : "其他");
                         },
+                        //无效有效的样式不一样
                         "bold": function() {
                             return function(text, render) {
                                 var status = render(text);
@@ -523,7 +531,9 @@
                         }
                     });
                     $("#aclList").html(rendered);
+                    //加载绑定事件
                     bindAclClick();
+                    //缓存住每一个acl
                     $.each(result.data.data, function(i, acl) {
                         aclMap[acl.id] = acl;
                     })
@@ -532,6 +542,7 @@
                 }
                 var pageSize = $("#pageSize").val();
                 var pageNo = $("#aclPage .pageNo").val() || 1;
+                //渲染分页组件
                 renderPage(url, result.data.total, pageNo, pageSize, result.data.total > 0 ? result.data.data.length : 0, "aclPage", renderAclListAndPage);
             } else {
                 showMessage("获取权限点列表", result.msg, false);
