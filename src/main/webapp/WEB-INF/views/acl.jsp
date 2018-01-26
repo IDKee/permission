@@ -287,6 +287,7 @@
                         updateAclModule(true, function (data) {
                             $("#dialog-aclModule-form").dialog("close");
                         }, function (data) {
+                            //回调成功，进行提示
                             showMessage("新增权限模块", data.msg, false);
                         })
                     },
@@ -324,6 +325,7 @@
                 type: 'POST',
                 success: function(result) {
                     if (result.ret) {
+                        //重新加载权限列表
                         loadAclList(lastClickAclModuleId);
                         if (successCallback) {
                             successCallback(result);
@@ -549,6 +551,7 @@
             }
         }
 
+        //权限点绑定是啊进
         function bindAclClick() {
             $(".acl-role").click(function (e) {
                 e.preventDefault();
@@ -568,6 +571,7 @@
                     }
                 })
             });
+            //编辑权限点
             $(".acl-edit").click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -578,9 +582,12 @@
                     open: function(event, ui) {
                         $(".ui-dialog-titlebar-close", $(this).parent()).hide();
                         optionStr = "";
+                        //打开dialog的时候加载option组件
                         recursiveRenderAclModuleSelect(aclModuleList, 1);
                         $("#aclForm")[0].reset();
+                        //渲染
                         $("#aclModuleSelectId").html(optionStr);
+                        //获取缓存的权限点
                         var targetAcl = aclMap[aclId];
                         if (targetAcl) {
                             $("#aclId").val(aclId);
@@ -596,6 +603,7 @@
                     buttons : {
                         "更新": function(e) {
                             e.preventDefault();
+                            //调用接口
                             updateAcl(false, function (data) {
                                 $("#dialog-acl-form").dialog("close");
                             }, function (data) {
@@ -609,21 +617,25 @@
                 });
             })
         }
-
+        //增加权限点
         $(".acl-add").click(function() {
+            //打开dilog框
             $("#dialog-acl-form").dialog({
                 model: true,
                 title: "新增权限",
                 open: function(event, ui) {
                     $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-                    optionStr = "";
+                    optionStr = "";a
+                    //递归渲染权限模块的option
                     recursiveRenderAclModuleSelect(aclModuleList, 1);
                     $("#aclForm")[0].reset();
+                    //渲染option组件到页面
                     $("#aclModuleSelectId").html(optionStr);
                 },
                 buttons : {
                     "添加": function(e) {
                         e.preventDefault();
+                        //点击添加，调用接口添加权限
                         updateAcl(true, function (data) {
                             $("#dialog-acl-form").dialog("close");
                         }, function (data) {
