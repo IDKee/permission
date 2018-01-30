@@ -11,8 +11,10 @@ import com.mall.dao.SysAclModuleMapper;
 import com.mall.dao.SysDeptMapper;
 import com.mall.dto.AclModuleLevelDto;
 import com.mall.dto.DeptLevelDto;
+import com.mall.model.SysAcl;
 import com.mall.model.SysAclModule;
 import com.mall.model.SysDept;
+import com.mall.service.ICoreService;
 import com.mall.service.ITreeService;
 import com.mall.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -33,6 +35,22 @@ public class TreeServiceImpl implements ITreeService {
     private SysDeptMapper sysDeptMapper;
     @Resource
     private SysAclModuleMapper sysAclModuleMapper;
+    @Resource
+    private ICoreService iCoreService;
+
+    /**
+     * 权限点树
+     * @param roleId
+     * @return
+     */
+    public List<AclModuleLevelDto> roleTree(int roleId){
+
+        //1. 当前用户已经分配的权限点
+        List<SysAcl> userAclList = iCoreService.getCurrentUserAclList();
+        //2. 当前角色已经分配的权限点
+        List<SysAcl> roleAclList = iCoreService.getRoleAclList(roleId);
+        return null;
+    }
 
     /**
      * 返回权限模块的树
@@ -51,7 +69,7 @@ public class TreeServiceImpl implements ITreeService {
     }
 
     /**
-     *根据当前结构适配出来一个权限树
+     *根据当前结构适配出来一个权限模块树
      * @param dtoList
      * @return
      */

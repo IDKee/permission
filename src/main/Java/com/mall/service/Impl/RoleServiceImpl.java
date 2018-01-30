@@ -3,6 +3,7 @@ package com.mall.service.Impl;
 import com.google.common.base.Preconditions;
 import com.mall.common.RequestHolder;
 import com.mall.dao.SysRoleMapper;
+import com.mall.dto.AclModuleLevelDto;
 import com.mall.exception.ParamException;
 import com.mall.model.SysRole;
 import com.mall.param.RoleParam;
@@ -22,6 +23,7 @@ import java.util.List;
 public class RoleServiceImpl implements IRoleService {
     @Resource
     private SysRoleMapper sysRoleMapper;
+
 
     /**
      * 添加角色

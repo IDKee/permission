@@ -135,7 +135,7 @@
     FROM sys_role
     WHERE name = #{name}
     <if test="id != null">
-      and id = #{id}
+      AND id = #{id}
     </if>
   </select>
 </mapper>
