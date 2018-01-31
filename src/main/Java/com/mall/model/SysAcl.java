@@ -1,15 +1,13 @@
 package com.mall.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"}) // 这个注解很重要，当我们想做equals hashcode判断的时候，完全取决于id，调用equals方法的时候id相同就说明是相同的两个类
 public class SysAcl {
     private Integer id;
 

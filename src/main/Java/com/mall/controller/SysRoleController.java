@@ -3,6 +3,7 @@ package com.mall.controller;
 import com.mall.common.JsonData;
 import com.mall.param.RoleParam;
 import com.mall.service.IRoleService;
+import com.mall.service.ITreeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,8 @@ public class SysRoleController {
 
     @Resource
     private IRoleService iRoleService;
+    @Resource
+    private ITreeService iTreeService;
 
     @RequestMapping("/role.page")
     @ResponseBody
@@ -46,10 +49,10 @@ public class SysRoleController {
         return JsonData.success(iRoleService.getAll());
     }
 
-    @RequestMapping("roleTree.json")
+    @RequestMapping("/roleTree.json")
     @ResponseBody
-    public JsonData roleTree(@RequestParam("roleId") int id){
-        return JsonData.success(iRoleService.getAll());
+    public JsonData roleTree(@RequestParam("roleId") int roleId){
+        return JsonData.success(iTreeService.roleTree(roleId));
     }
 
 

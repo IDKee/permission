@@ -12,13 +12,13 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @Getter
 @ToString
-public class AclDto {
+public class AclDto extends SysAcl {
 
     private boolean checked = false; //权限点是否选中
 
     private boolean hasAcl = false; //有没有权限操作
 
-    private static AclDto adapt(SysAcl acl){
+    public static AclDto adapt(SysAcl acl){
         AclDto dto = new AclDto();
         BeanUtils.copyProperties(acl, dto); //相比acl多了checked和hasAcl两个属性
         return dto;
