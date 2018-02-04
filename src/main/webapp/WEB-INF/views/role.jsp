@@ -165,6 +165,7 @@
 
         var setting = {
             check: {
+                //checkbox勾选框
                 enable: true,
                 chkDisabledInherit: true,
                 chkboxType: {"Y": "ps", "N": "ps"}, //auto check 父节点 子节点
@@ -289,6 +290,7 @@
                 type: 'POST',
                 success: function (result) {
                     if (result.ret) {
+                        //渲染角色树
                         renderRoleTree(result.data);
                     } else {
                         showMessage("加载角色权限数据", result.msg, false);
@@ -308,16 +310,17 @@
             }
             return v.length > 0 ? v.substring(1): v;
         }
-
+        //渲染角色树，使用zTree插件渲染
         function renderRoleTree(aclModuleList) {
             zTreeObj = [];
+            //递归生成数据
             recursivePrepareTreeData(aclModuleList);
             for(var key in nodeMap) {
                 zTreeObj.push(nodeMap[key]);
             }
             $.fn.zTree.init($("#roleAclTree"), setting, zTreeObj);
         }
-
+        //递归生成数据，把zTreeObj处理完
         function recursivePrepareTreeData(aclModuleList) {
             // prepare nodeMap
             if (aclModuleList && aclModuleList.length > 0) {

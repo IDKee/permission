@@ -96,7 +96,6 @@ public class TreeServiceImpl implements ITreeService {
         }
         bindAclWithOrder(aclModuleLevelDtoList, moduleIdAclMap);
         return aclModuleLevelDtoList;
-
     }
 
     private void bindAclWithOrder(List<AclModuleLevelDto> aclModuleLevelDtoList, Multimap<Integer, AclDto> moduleIdAclMap){
@@ -110,7 +109,6 @@ public class TreeServiceImpl implements ITreeService {
                 dto.setAclList(aclDtoList);
             }
             bindAclWithOrder(dto.getAclModuleList(),moduleIdAclMap);
-
         }
     }
     /**
