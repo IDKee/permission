@@ -158,22 +158,27 @@
 
         // zTree
         <!-- 树结构相关 开始 -->
-        var zTreeObj = [];
-        var modulePrefix = 'm_';
-        var aclPrefix = 'a_';
-        var nodeMap = {};
+        var zTreeObj = []; //存储输的结构
+        var modulePrefix = 'm_';//权限模块的前缀
+        var aclPrefix = 'a_'; //权限点的前缀
+        var nodeMap = {}; //所有系你先
 
         var setting = {
+            //checkbox相关
             check: {
-                //checkbox勾选框
+                // checkbox勾选框展示出来
                 enable: true,
+                // checkbox有一个disabled 是否做继承
                 chkDisabledInherit: true,
+                // checkbix 属性 ，p选中之后同时作用与父节点 s子节点
                 chkboxType: {"Y": "ps", "N": "ps"}, //auto check 父节点 子节点
+                // 每次点击check 都trigger相关的方法
                 autoCheckTrigger: true
             },
             data: {
                 simpleData: {
                     enable: true,
+                    //顶级模块是0
                     rootPId: 0
                 }
             },
@@ -181,7 +186,7 @@
                 onClick: onClickTreeNode
             }
         };
-
+        //点击节点 都要打开节点，展开
         function onClickTreeNode(e, treeId, treeNode) { // 绑定单击事件
             var zTree = $.fn.zTree.getZTreeObj("roleAclTree");
             zTree.expandNode(treeNode);
