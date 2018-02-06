@@ -192,9 +192,9 @@
             zTree.expandNode(treeNode);
         }
 
-        //加载角色列表
+        // 加载角色列表
         function loadRoleList() {
-            //请求接口加载角色列表
+            // 请求接口加载角色列表
             $.ajax({
                 url: "/sys/role/list.json",
                 //成功
@@ -275,7 +275,7 @@
             currentRole.addClass("btn-yellow");
             currentRole.addClass("no-hover");
             lastRoleId = roleId;
-            //tab烂第一个显示出来
+            //tab栏第一个显示出来
             $('#roleTab a:first').trigger('click');
             if (selectFirstTab) {
                 //加载角色权限的方法
@@ -315,8 +315,10 @@
             }
             return v.length > 0 ? v.substring(1): v;
         }
+
         //渲染角色树，使用zTree插件渲染
         function renderRoleTree(aclModuleList) {
+            //清空
             zTreeObj = [];
             //递归生成数据
             recursivePrepareTreeData(aclModuleList);
@@ -327,17 +329,26 @@
         }
         //递归生成数据，把zTreeObj处理完
         function recursivePrepareTreeData(aclModuleList) {
-            // prepare nodeMap
+            // 准备 nodeMap
             if (aclModuleList && aclModuleList.length > 0) {
+                //遍历aclModuleListDto的每一个对象
                 $(aclModuleList).each(function(i, aclModule) {
+                    // 当前节点是不是勾选
                     var hasChecked = false;
+                    // 当前节点包含权限点，并且长度大于0
                     if (aclModule.aclList && aclModule.aclList.length > 0) {
+                        // 遍历当前的权限点
                         $(aclModule.aclList).each(function(i, acl) {
+                            // 把权限点写进tree对象里面
                             zTreeObj.push({
+                                // 权限点的id
                                 id: aclPrefix + acl.id,
+                                // 哪个模块下面
                                 pId: modulePrefix + acl.aclModuleId,
+                                // 展示的名称
                                 name: acl.name + ((acl.type == 1) ? '(菜单)' : ''),
                                 chkDisabled: !acl.hasAcl,
+                                // 是否点击
                                 checked: acl.checked,
                                 dataId: acl.id
                             });
@@ -346,12 +357,14 @@
                             }
                         });
                     }
+                    // 对权限模块进行处理
                     if ((aclModule.aclModuleList && aclModule.aclModuleList.length > 0) ||
                         (aclModule.aclList && aclModule.aclList.length > 0)) {
                         nodeMap[modulePrefix + aclModule.id] = {
                             id : modulePrefix + aclModule.id,
                             pId: modulePrefix + aclModule.parentId,
                             name: aclModule.name,
+                            //是否允许打开
                             open: hasChecked
                         };
                         var tempAclModule = nodeMap[modulePrefix + aclModule.id];
@@ -372,7 +385,7 @@
             }
         }
 
-        //新政角色
+        //新增角色
         $(".role-add").click(function () {
             $("#dialog-role-form").dialog({
                 model: true,

@@ -17,7 +17,6 @@ public interface SysRoleAclMapper {
     int updateByPrimaryKeySelective(SysRoleAcl record);
 
     int updateByPrimaryKey(SysRoleAcl record);
-
     //传入多个角色id，查询它们一起的权限点的总和
     List<Integer> getAclIdListByRoleIdList(@Param("roleIdList") List<Integer> roleIdList);
 }

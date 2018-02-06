@@ -2,6 +2,12 @@
 # permission
 权限管理系统（重要接口的解决方案）
 =======
+### roleTree 权限点树
+1. 构造dto对象，AclModuleLevelDto(包括权限的集合和权限点的dto对象的集合)
+
+
+
+
 ### 更新部门 (update.json)
 
 1. 判断部门名称有没有相同的

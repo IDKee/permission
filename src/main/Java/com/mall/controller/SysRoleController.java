@@ -43,6 +43,7 @@ public class SysRoleController {
         iRoleService.update(param);
         return JsonData.success();
     }
+
     @RequestMapping("/list.json")
     @ResponseBody
     public JsonData list(){
