@@ -303,7 +303,7 @@
                 }
             });
         }
-
+        // 得到树 选中的id
         function getTreeSelectedId() {
             var treeObj = $.fn.zTree.getZTreeObj("roleAclTree");
             var nodes = treeObj.getCheckedNodes(true);
@@ -410,7 +410,7 @@
                 }
             })
         });
-
+        // 角色权限保存按钮的点击
         $(".saveRoleAcl").click(function (e) {
             e.preventDefault();
             if (lastRoleId == -1) {
