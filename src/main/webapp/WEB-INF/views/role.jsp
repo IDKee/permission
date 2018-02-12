@@ -303,7 +303,7 @@
                 }
             });
         }
-        // 得到树 选中的id
+        // 得到树 选中的id，用逗号分割
         function getTreeSelectedId() {
             var treeObj = $.fn.zTree.getZTreeObj("roleAclTree");
             var nodes = treeObj.getCheckedNodes(true);

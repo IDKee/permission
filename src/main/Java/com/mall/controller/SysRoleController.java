@@ -2,6 +2,7 @@ package com.mall.controller;
 
 import com.mall.common.JsonData;
 import com.mall.param.RoleParam;
+import com.mall.service.IRoleAclService;
 import com.mall.service.IRoleService;
 import com.mall.service.ITreeService;
 import com.mall.util.StringUtil;
@@ -25,6 +26,8 @@ public class SysRoleController {
     private IRoleService iRoleService;
     @Resource
     private ITreeService iTreeService;
+    @Resource
+    private IRoleAclService iRoleAclService;
 
     @RequestMapping("/role.page")
     @ResponseBody
@@ -80,13 +83,15 @@ public class SysRoleController {
     /**
      * 角色权限，点击保存按钮
      * @param roleId
-     * @param aclIds
+     * @param aclIds 不是必填的，默认值是空字符串
      * @return
      */
     @RequestMapping("/changeAcls.json")
     @ResponseBody
-    public JsonData changeAcls(@RequestParam("roleId") int roleId, @RequestParam("aclIds") String aclIds){
+    public JsonData changeAcls(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds", required = false, defaultValue = "") String aclIds){
+        // 利用工具类把字符串转化成list
         List<Integer> aclIdList = StringUtil.splitToListInt(aclIds);
+        iRoleAclService.changeRoleAcls(roleId,aclIdList);
         return JsonData.success();
     }
 
