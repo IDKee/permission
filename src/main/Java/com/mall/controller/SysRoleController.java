@@ -1,10 +1,11 @@
 package com.mall.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mall.common.JsonData;
+import com.mall.model.SysUser;
 import com.mall.param.RoleParam;
-import com.mall.service.IRoleAclService;
-import com.mall.service.IRoleService;
-import com.mall.service.ITreeService;
+import com.mall.service.*;
 import com.mall.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by 王乾 on 2018/1/27.
@@ -28,6 +32,10 @@ public class SysRoleController {
     private ITreeService iTreeService;
     @Resource
     private IRoleAclService iRoleAclService;
+    @Resource
+    private IRoleUserService iRoleUserService;
+    @Resource
+    private IUserService iUserService;
 
     @RequestMapping("/role.page")
     @ResponseBody
@@ -94,6 +102,42 @@ public class SysRoleController {
         iRoleAclService.changeRoleAcls(roleId,aclIdList);
         return JsonData.success();
     }
+
+    @RequestMapping("/users.json")
+    @ResponseBody
+    public JsonData users(@RequestParam("roleId") int roleId){
+        // 得到已选的用户列表，当前选中角色的所用的用户列表
+        List<SysUser> selectedUserList = iRoleUserService.getListByRoleId(roleId);
+        // 获取所有的用户
+        List<SysUser> allUserList = iUserService.getAll();
+        // 列表的操作 获取未选中的用户列表
+        List<SysUser> unselectUserList = Lists.newArrayList();
+        // JDK1.8 对当前选中角色的所用用户对象进行流式遍历，进行map的操作，map的值为取出list中sysUser的id
+        Set<Integer> selectedUserIdList = selectedUserList.stream().map(sysUser ->sysUser.getId() ).collect(Collectors.toSet());
+        // 这样对List遍历特别慢，需要用到上面的jdk1.8进行加速
+//        for (SysUser sysUser : allUserList){
+//            //  用户的状态为1，并且没有被选中
+//            if (sysUser.getStatus() == 1 && !selectedUserList.contains(sysUser)){
+//                unselectUserList.add(sysUser);
+//            }
+//        }
+        //加速后
+        for (SysUser sysUser : allUserList){
+            //  用户的状态为1，并且没有被选中
+            if (sysUser.getStatus() == 1 && !selectedUserIdList.contains(sysUser.getId())){
+                unselectUserList.add(sysUser);
+            }
+        }
+        // JDK1.8 对当前选中角色的所用用户对象进行流式遍历，进行filter的操作，把sysUser的状态码不为1的过滤掉
+        //selectedUserList = selectedUserList.stream().filter(sysUser -> sysUser.getStatus() !=1 ).collect(Collectors.toList());
+        // 把已选的未选的通过一个接口返回出去
+        Map<String,List<SysUser>> map = Maps.newHashMap();
+        map.put("selected", selectedUserList);
+        map.put("unselected",unselectUserList);
+        return JsonData.success();
+    }
+
+
 
 
 

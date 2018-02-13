@@ -453,20 +453,24 @@
                 }
             })
         }
+        // Tab切换功能实现
         $("#roleTab a[data-toggle='tab']").on("shown.bs.tab", function(e) {
             if(lastRoleId == -1) {
                 showMessage("加载角色关系","请先在左侧选择操作的角色", false);
                 return;
             }
+            // 当前点击对象的属性 是第一个
             if (e.target.getAttribute("href") == '#roleAclTab') {
                 selectFirstTab = true;
+                //加载role acl
                 loadRoleAcl(lastRoleId);
             } else {
                 selectFirstTab = false;
+                // 加载role user
                 loadRoleUser(lastRoleId);
             }
         });
-
+        // 加载角色用户列表
         function loadRoleUser(selectedRoleId) {
             $.ajax({
                 url: "/sys/role/users.json",

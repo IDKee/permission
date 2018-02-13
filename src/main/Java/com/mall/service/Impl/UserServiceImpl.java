@@ -30,6 +30,14 @@ public class UserServiceImpl implements IUserService {
 
 
     /**
+     * 获取所有的user
+     * @return
+     */
+    public List<SysUser> getAll(){
+        return sysUserMapper.getAll();
+    }
+
+    /**
      * 查询部门下面得人员列表
      * @param deptId
      * @param page
