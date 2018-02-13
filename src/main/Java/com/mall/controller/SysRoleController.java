@@ -103,6 +103,11 @@ public class SysRoleController {
         return JsonData.success();
     }
 
+    /**
+     * 点击角色后，获取当前角色的 选中和未选中的用户对象
+     * @param roleId
+     * @return
+     */
     @RequestMapping("/users.json")
     @ResponseBody
     public JsonData users(@RequestParam("roleId") int roleId){
