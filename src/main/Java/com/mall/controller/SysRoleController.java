@@ -139,7 +139,7 @@ public class SysRoleController {
         Map<String,List<SysUser>> map = Maps.newHashMap();
         map.put("selected", selectedUserList);
         map.put("unselected",unselectUserList);
-        return JsonData.success();
+        return JsonData.success(map);
     }
 
 

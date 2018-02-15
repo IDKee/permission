@@ -68,6 +68,7 @@
                         <div class="box1 col-md-6">已选用户列表</div>
                     </div>
                     <select multiple="multiple" size="10" name="roleUserList" id="roleUserList" >
+
                     </select>
                     <div class="hr hr-16 hr-dotted"></div>
                     <button class="btn btn-info saveRoleUser" type="button">
@@ -384,7 +385,6 @@
                 });
             }
         }
-
         //新增角色
         $(".role-add").click(function () {
             $("#dialog-role-form").dialog({
@@ -480,8 +480,11 @@
                 type: 'POST',
                 success: function (result) {
                     if (result.ret) {
+                        // 渲染选中的
                         var renderedSelect = Mustache.render(selectedUsersTemplate, {userList: result.data.selected});
+                        // 渲染未选中的
                         var renderedUnSelect = Mustache.render(unSelectedUsersTemplate, {userList: result.data.unselected});
+                        // 同时渲染
                         $("#roleUserList").html(renderedSelect + renderedUnSelect);
 
                         if(!hasMultiSelect) {
@@ -500,7 +503,7 @@
                 }
             });
         }
-
+        // 点击角色用户的保存按钮
         $(".saveRoleUser").click(function (e) {
             e.preventDefault();
             if (lastRoleId == -1) {
