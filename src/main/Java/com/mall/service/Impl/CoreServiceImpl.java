@@ -32,7 +32,7 @@ public class CoreServiceImpl implements ICoreService {
      */
     public List<SysAcl> getCurrentUserAclList(){
         int userId = RequestHolder.getCurrentUser().getId();
-        return getUserAclLost(userId);
+        return getUserAclList(userId);
     }
 
     /**
@@ -52,7 +52,7 @@ public class CoreServiceImpl implements ICoreService {
      * @param userId
      * @return
      */
-    public List<SysAcl> getUserAclLost(int userId){
+    public List<SysAcl> getUserAclList(int userId){
         /**
          * 1. 如果是超级用户，返回所用的权限点
          * 2. 不是超级用户进行下面的操作

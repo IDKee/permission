@@ -42,6 +42,22 @@ public class TreeServiceImpl implements ITreeService {
     private SysAclMapper sysAclMapper;
 
     /**
+     *取出用户当前已经分配的权限
+     */
+    public List<AclModuleLevelDto> userAclTree(int userId) {
+        List<SysAcl> userAclList = iCoreService.getUserAclList(userId);
+        List<AclDto> aclDtoList = Lists.newArrayList();
+        for (SysAcl acl : userAclList) {
+            AclDto dto = AclDto.adapt(acl);
+            dto.setHasAcl(true);
+            dto.setChecked(true);
+            aclDtoList.add(dto);
+        }
+        // 做成树
+        return aclListToTree(aclDtoList);
+    }
+
+    /**
      * 权限点树
      * @param roleId
      * @return

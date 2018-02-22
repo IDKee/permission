@@ -15,4 +15,6 @@ public interface ITreeService {
     List<AclModuleLevelDto> aclModuleTree();
 
     List<AclModuleLevelDto> roleTree(int roleId);
+
+    List<AclModuleLevelDto> userAclTree(int userId);
 }

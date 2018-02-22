@@ -15,6 +15,6 @@ public interface ICoreService {
     List<SysAcl> getRoleAclList(int roleId);
 
 
-     List<SysAcl> getUserAclLost(int userId);
+     List<SysAcl> getUserAclList(int userId);
 }
 

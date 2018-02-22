@@ -113,4 +113,26 @@
     FROM sys_role_user
     WHERE role_id = #{roleId}
   </select>
+
+  <delete id="deleteByRoleId" parameterType="int">
+    DELETE FROM sys_role_user
+    WHERE role_id = #{roleId}
+  </delete>
+
+  <insert id="batchInsert" parameterType="map">
+    INSERT INTO sys_role_user(role_id ,user_id ,operator ,operate_time,operate_ip)
+    VALUES
+    <foreach collection="roleUserList" item="roleUser" separator=",">
+      (#{roleUser.roleId},#{roleUser.userId},#{roleUser.operator},#{roleUser.operateTime},#{roleUser.operateIp})
+    </foreach>
+  </insert>
+
+  <select id="getUserIdListByRoleIdList" parameterType="map" resultType="int">
+     SELECT user_id
+    FROM sys_role_user
+    WHERE role_id IN 
+    <foreach collection="roleIdList" item="roleId" open="(" close=")" separator=",">
+      #{roleId}
+    </foreach>
+  </select>
 </mapper>

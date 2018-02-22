@@ -434,6 +434,7 @@
         });
 
         function bindUserClick() {
+            // 获取当前用户的权限数据
             $(".user-acl").click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -445,6 +446,7 @@
                     },
                     success: function(result) {
                         if (result.ret) {
+                            // 把获取的数据输出，如果想渲染自己再做
                             console.log(result)
                         } else {
                             showMessage("获取用户权限数据", result.msg, false);

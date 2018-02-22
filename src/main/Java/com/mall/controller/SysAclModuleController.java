@@ -7,6 +7,7 @@ import com.mall.service.IAclModuleService;
 import com.mall.service.ITreeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -65,4 +66,7 @@ public class SysAclModuleController {
         return  JsonData.success();
     }
 
+    public JsonData delete(@RequestParam("id") int id){
+        return JsonData.success();
+    }
 }

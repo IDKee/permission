@@ -403,7 +403,7 @@
                 var aclModuleId = $(this).attr("data-id");
                 handleAclModuleSelected(aclModuleId);
             });
-            //todo
+            //删除模块
             $(".aclModule-delete").click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();

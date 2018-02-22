@@ -5,8 +5,6 @@ import com.mall.dto.DeptLevelDto;
 import com.mall.param.DeptParam;
 import com.mall.service.IDeptService;
 import com.mall.service.ITreeService;
-import com.mall.service.Impl.DeptServiceImpl;
-import com.mall.service.Impl.TreeServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
